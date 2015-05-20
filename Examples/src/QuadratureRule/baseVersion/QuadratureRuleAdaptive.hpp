@@ -17,7 +17,7 @@ namespace NumericalIntegration{
    */
   
   template <class SQR>
-  class QuadratureRuleAdaptive : public QuadratureRule
+  class QuadratureRuleAdaptive final: public QuadratureRule
   {
   public:
     //! Constructor.
@@ -27,8 +27,6 @@ namespace NumericalIntegration{
       algorithm.
     */
     QuadratureRuleAdaptive(double targetError=1.e-6,unsigned int maxIter=100);
-    //! Copy constructor.
-    QuadratureRuleAdaptive(QuadratureRuleAdaptive const &)=default;
     
     //! The clone method.
     /*!  
@@ -43,10 +41,14 @@ namespace NumericalIntegration{
     double weight(const int i)const{return _therule.weight(i);};
     unsigned int order() const{return _therule.order();};
     /*!@}*/
+    //! set Target Error
+    void setTargetError(double const t){_targetError=t;};
+    //! set Max number of iterations
+    void setMaxIter(unsigned int n){_maxIter=n;};
     //! The method that applies the rule.
-    virtual double apply(FunPoint const &, double const & a,
+    double apply(FunPoint const &, double const & a,
 			 double const & b) const override;
-    virtual ~QuadratureRuleAdaptive(){};
+    QuadratureRuleAdaptive(){};
   private:
     //! Static becouse common to all objects of this class
     static QuadratureRulePlusError<SQR> _therule;
@@ -107,7 +109,7 @@ namespace NumericalIntegration{
     if(counter>=_maxIter) 
       throw std::runtime_error("Max number iteration exceeded in QuadratureRuleAdaptive");
     //std::cout<<"Num Iter= "<<counter<<std::endl;    
-	return result;
+    return result;
   }
 }
 
