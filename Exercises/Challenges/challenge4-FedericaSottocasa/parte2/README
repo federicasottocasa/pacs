@@ -1,0 +1,6 @@
+Il grado diventa un parametro template.
+
+L'operatore + restituisce il polinomio con il grado pari al massimo di quello degli addendi, così come l'operatore -
+Ragionamenti analoghi sono stati fatti per * e il /. Da notare che il grado del resto non è noto a priori per cui restituisco il grado del caso peggiore in cui posso capitare e poi assegno realD correttamente.
+
+Gli operatori *= -= e += ho deciso di implementarli in modo che agiscano tra polinomi della stessa classe quindi con lo stesso parametro template. Per evitare allora sprechi di memoria ho creato un costruttore che prende come argomento il vero grado del polinomio e un nuovo attributo della classe realD. In particolare per += e -= entrambi hanno lo stesso parametro template pari al grado del polinomio di grado massimo ma non per forza lo stesso vero grado. Invece nel *= devo impostare un parametro template dei due polinomi pari al grado del polinomio prodotto risultante.
