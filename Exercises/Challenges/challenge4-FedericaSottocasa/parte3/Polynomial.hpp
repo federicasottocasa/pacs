@@ -354,7 +354,7 @@ template<unsigned D1, unsigned D2,typename T>
  Polynomial<D1+D2,T> operator *(Polynomial<D1,T> const & p1,Polynomial <D2,T> const & p2)
 {
   T prod;
-  std::vector<T> tmp(p1.realD+p2.realD+1,0);  
+  std::vector<T> tmp(D1+D2+1,0);  
 
   for(std::size_t i=0;i<=p1.realD;i++){ 
 	for(std::size_t j=0;j<=p2.realD;j++){	
