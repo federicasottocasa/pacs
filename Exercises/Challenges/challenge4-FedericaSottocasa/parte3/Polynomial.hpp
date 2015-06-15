@@ -37,12 +37,6 @@ public:
   unsigned int const getOrder();
   unsigned int const getOrder() const;
 
-  //they give the real degree of Polynomial, the first is a partial specialization
-  template<unsigned N, typename M>
-  friend unsigned int effectiveOrder(Polynomial<N,std::complex<M>>);
-  template<unsigned N, typename M>
-  friend unsigned int effectiveOrder(Polynomial<N,M>);
-
   //To give sense to these operator I think about the template parameter of the class as a maximum degree
   Polynomial & operator+=(Polynomial const &);
   Polynomial & operator-=(Polynomial const &);
@@ -101,7 +95,7 @@ public:
 private:
   //Vector storing the coefficients of the polynomial starting from the one of x^0
   std::vector<T> coeff; 
-  //An attribute of the class that avoid to allocate some memory that isn't necessary.
+  //An attribute of the class that indicates the real memory allocated
   unsigned realD;
 };
 
@@ -237,32 +231,6 @@ std::ostream & operator << (std::ostream & str, Polynomial<S,std::complex<P> > c
 }
 
 
-//return the effective order of the polynomial, if the coeff of max order is 0 the polynomial will have an inferior order
-template<unsigned D,typename T>
-unsigned int effectiveOrder(Polynomial<D,T> p){
-  unsigned int cont=p.realD;
-  for(int i=p.realD;i>0;i--){
-        
-	if(p.coeff[i]==0) cont--;
-	else return cont;
-  }
-  return cont;
-}
-
-
-//partial specialization for complex
-template<unsigned D,typename T>
-unsigned int effectiveOrder(Polynomial<D,std::complex<T> > p){
-  unsigned int cont=p.realD;
-  for(int i=p.realD;i>0;i--){
-  
-	if(p.coeff[i]==std::complex<T>(0,0)) cont--;
-	else return cont;
-  }
-  return cont;
-}
-
-
 //Overloads of += such that it sums polynomials that belongs to the same template class
 template<unsigned D,typename T>
 Polynomial<D,T> & Polynomial<D,T>::operator+=(Polynomial<D,T> const & d)
@@ -355,7 +323,6 @@ Polynomial<((D1>D2)?D1:D2),T> operator +(Polynomial<D1,T> const & d1,Polynomial<
 	for(std::size_t i=d1.realD+1;i<=d2.realD;i++)
 	    result[i]=d2[i];   	
     	}
-  result.realD=effectiveOrder(result);
   return result;
 }
 
@@ -378,7 +345,6 @@ Polynomial<(D1>D2)?D1:D2,T> operator -(Polynomial<D1,T> const & d1,Polynomial<D2
 	for(auto i=d1.realD+1;i<=d2.realD;i++)
 	    result[i]=-d2[i];   	
     	}
-  result.realD=effectiveOrder(result);
   return result;
 }
 
@@ -388,7 +354,7 @@ template<unsigned D1, unsigned D2,typename T>
  Polynomial<D1+D2,T> operator *(Polynomial<D1,T> const & p1,Polynomial <D2,T> const & p2)
 {
   T prod;
-  std::vector<T> tmp(D1+D2+1,0);  
+  std::vector<T> tmp(p1.realD+p2.realD+1,0);  
 
   for(std::size_t i=0;i<=p1.realD;i++){ 
 	for(std::size_t j=0;j<=p2.realD;j++){	
@@ -398,7 +364,6 @@ template<unsigned D1, unsigned D2,typename T>
 	}  
 
   Polynomial<D1+D2,T> product(tmp);
-  product.realD=p1.realD+p2.realD;  
   return product;
 }
 
@@ -440,8 +405,7 @@ std::pair<Polynomial<D1-D2,T>, Polynomial<D2-1,T> > operator /(Polynomial<D1,T> 
         		       }
   			}
 	} 
-result.realD=p.realD-d.realD;
-diff.realD=effectiveOrder(diff); 
+
 std::pair<Polynomial<D1-D2,T>, Polynomial<D2-1,T> > out=std::make_pair(result,diff);
 
 return out;
@@ -482,8 +446,6 @@ std::pair<Polynomial<D1-D2,double>, Polynomial<D2-1,double> > operator /(Polynom
         		       }
   			}
 	}
-result.realD=p.realD-d.realD;
-diff.realD=effectiveOrder(diff); 
 std::pair<Polynomial<D1-D2,double>, Polynomial<D2-1,double> > out=std::make_pair(result,diff);
 
  return out;
@@ -544,7 +506,6 @@ std::istream & operator >> (std::istream & str, Polynomial<S,L> & r){
 	}
 
   r=Polynomial<S,L>(c); 
-  r.realD=effectiveOrder(r);
   return str;
 }
 

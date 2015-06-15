@@ -19,7 +19,7 @@ std::cout<<"prodotto pa*pd  "<<p<<std::endl;
 //result 2+5*x^1+7*x^2+21*x^3+44*x^4+43*x^5+18*x^6
 
  
-//overload + and - 
+//overload + and -  
 auto s=pd+pa;   
 std::cout<<"somma pa+pd  "<<s<<std::endl;  
 auto di=pa-pd; 
@@ -74,7 +74,7 @@ std::cout<<std::endl<<"po  "<<po<<std::endl;
 std::cout<<"pq  "<<pq<<std::endl; 
 po*=pq;
 std::cout<<"po*=pl "<<po<<std::endl; 
-//result: -4-15*x^1+22*x^2-9*x^3+9*x^4+2*x^5       
+//result: -4-15*x^1+22*x^2-9*x^3+9*x^4+2*x^5        
 
 //You must fix before the template parameter. For example -9.03*x^0+2.567*x^1 and then a blank space.
 Polynomial<1> in;

@@ -4,7 +4,7 @@
 #include <exception>
 #include<complex> 
   
-int main()
+int main() 
 { 
 using complesso=std::complex<double>;
  
@@ -29,17 +29,17 @@ std::cout<<"differenza tra polinomi complessi p1-p2= "<<diffCompl<<std::endl;
 auto prodCompl=pi*pj;  
 std::cout<<"prodotto tra polinomi complessi p1*p2= "<<prodCompl<<std::endl;
 //result  -37.67-32.7i+(32+90.3i)*x^1+(5.1+62.53i)*x^2+(18.6-4.3i)*x^3
-
+  
 auto divCompl=pj/pi;  
 std::cout<<"divisione tra polinomi complessi p2/p1=  "<<divCompl.first<<std::endl;
 std::cout<<"con resto= "<<divCompl.second<<std::endl; 
 //result  17.7928-7.1196i+(2.92+2.46i)*x^1    resto -86.5812-151.095i
 
-std::vector<int> h={1,2,0,0}; 
-Polynomial<3,int> ph(h,1);
+std::vector<int> h={1,2}; 
+Polynomial<1,int> ph(h);
 std::cout<<std::endl<<"p3: "<<ph<<std::endl;       
-std::vector<int> l={4,5,7,11,0,0};
-Polynomial<5,int> pl(l,3);    
+std::vector<int> l={4,5,7,11};
+Polynomial<3,int> pl(l);    
 std::cout<<"p4: "<<pl<<std::endl;
  
 auto somma=ph+pl;
@@ -73,9 +73,9 @@ std::cout<<"overload *=: po*=pm: "<<po<<std::endl;
 //result 81.9-105.67x^1+65.8x^2+118.02x^3-59.25x^4+31.4x^5+17.4x^6
 
 std::vector<complesso> n={complesso(-5.2,6),complesso(0,5),complesso(-8,-2)};
-Polynomial<4,complesso> pn(n,2); 
+Polynomial<2,complesso> pn(n); 
 std::vector<complesso> q={complesso(-9,-5),complesso(6,-4.3),complesso(8,2)};
-Polynomial<4,complesso> pq(q,2); 
+Polynomial<2,complesso> pq(q); 
 std::cout<<std::endl<<"p7: "<<pn<<std::endl; 
 std::cout<<"p8: "<<pq<<std::endl; 
 pn+=pq;

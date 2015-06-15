@@ -1,7 +1,5 @@
 Anche il tipo diventa template. Ho dovuto specializzare:
 
-- effectiveOrder per i polinomi a coefficienti complessi
-
 - << per i polinomi a coefficienti complessi
 
 - divisione per i polinomi a coefficienti interi che possono dare un polinomio a coeffiecienti double

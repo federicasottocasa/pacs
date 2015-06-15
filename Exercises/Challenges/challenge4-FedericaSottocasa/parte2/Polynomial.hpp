@@ -37,9 +37,6 @@ public:
   unsigned int const getOrder();
   unsigned int const getOrder() const;
 
-  //returns the effective degree of Polynomial
-  unsigned int effectiveOrder() const;
-
   //To give sense to these operator I think to the template parameter of the class as a maximum degree
   Polynomial & operator+=(Polynomial const &);
   Polynomial & operator-=(Polynomial const &);
@@ -75,7 +72,7 @@ public:
 private:
   //Vector storing the coefficients of the polynomial starting from the one of x^0
   std::vector<double> coeff; 
-  //A new attribute of the class that store the real degree
+  //A new attribute of the class that represents the real allocated memory
   unsigned realD;
 };
 
@@ -142,18 +139,6 @@ std::ostream & operator << (std::ostream & str, Polynomial<S> const & p)
   }
   	if(contzero==p.realD+1) str<<" 0";
   	return str;
-}
-
-
-//return the effective order of the polynomial, if the coeff of max order is 0 the polynomial will have an inferior order
-template<unsigned D>
-unsigned int Polynomial<D>::effectiveOrder()const{
-  unsigned int cont=realD;
-  for(int i=realD;i>0;i--){
-	if(coeff[i]==0) cont--;
-	else return cont;
-  }
-  return cont;
 }
 
 
@@ -246,7 +231,6 @@ Polynomial<(D1>D2)?D1:D2> operator +(Polynomial<D1> const & d1,Polynomial<D2> co
 	for(std::size_t i=d1.realD+1;i<=d2.realD;i++)
 	    result[i]=d2[i];   	
     	}
-  result.realD=result.effectiveOrder();
   return result;
 }
 
@@ -269,7 +253,6 @@ Polynomial<(D1>D2)?D1:D2> operator -(Polynomial<D1> const & d1,Polynomial<D2> co
 	for(auto i=d1.realD+1;i<=d2.realD;i++)
 	    result[i]=-d2[i];   	
     	}
-  result.realD=result.effectiveOrder();
   return result;
 }
 
@@ -285,7 +268,6 @@ template<unsigned D1,unsigned D2> Polynomial<D1+D2> operator *(Polynomial<D1> co
 	  	               	}
 	}  
   Polynomial<D1+D2> product(tmp);
-  product.realD=p1.realD+p2.realD;  
   return product;
 }
 
@@ -323,8 +305,6 @@ std::pair<Polynomial<D1-D2>,Polynomial<D2-1>> operator /(Polynomial<D1> const & 
         		       }
   			}
 	}
- result.realD=p.realD-d.realD;
- diff.realD=diff.effectiveOrder(); //about the module of the division the degree isn't known before, at most it is D2-1.
  std::pair<Polynomial<D1-D2>,Polynomial<D2-1> > out=std::make_pair(result,diff);
  return out;
 }
@@ -383,7 +363,6 @@ std::istream & operator >> (std::istream & str, Polynomial<S> & r){
 	}
 
   r=Polynomial<S>(c); 
-  r.realD=r.effectiveOrder();
   return str;
 }
 
