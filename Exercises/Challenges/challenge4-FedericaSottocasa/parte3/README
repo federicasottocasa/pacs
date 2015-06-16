@@ -2,6 +2,8 @@ Anche il tipo diventa template. Ho dovuto specializzare:
 
 - << per i polinomi a coefficienti complessi
 
-- divisione per i polinomi a coefficienti interi che possono dare un polinomio a coeffiecienti double
+- divisione per i polinomi a coefficienti interi che possono dare un polinomio a coefficienti double
+
+- divisione per i polinomi a coefficienti complex<int> che possono dare un polinomio a coefficienti complex<double>
 
 - call operator: ho supposto che sia il punto in cui valuto il polinomio che il polinomio, se vedono coinvolti i complessi devono avere parte immaginaria e reale di tipo double. Così ho evitato eccessivi specializzazioni della funzione Evaluation. Talvolta per evitare ulteriori specializzazioni nella funzione Evaluation opero dei cast che non sono strettamente necessari.

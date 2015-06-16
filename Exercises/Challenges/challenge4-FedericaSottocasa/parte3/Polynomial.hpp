@@ -80,6 +80,9 @@ public:
   template<unsigned D1, unsigned D2> 
   friend std::pair<Polynomial<D1-D2,double>, Polynomial<D2-1,double>> operator /(Polynomial<D1,int> const &, Polynomial<D2,int> const &);
 
+template<unsigned D1, unsigned D2>
+friend std::pair<Polynomial<D1-D2,std::complex<double>>, Polynomial<D2-1,std::complex<double>> > operator /(Polynomial<D1,std::complex<int>> const &, Polynomial<D2,std::complex<int>> const &);
+
 //Streaming operator to write a polynomial as input.
   template <unsigned M,typename N>
   friend std::istream & operator >> (std::istream &, Polynomial<M,N> &);
@@ -450,6 +453,58 @@ std::pair<Polynomial<D1-D2,double>, Polynomial<D2-1,double> > out=std::make_pair
 
  return out;
 }
+
+
+//partial specialization for division of Polynomials with complex<int> coefficients that can give a Polynomial with complex<double> coefficients.
+template<unsigned D1, unsigned D2>
+std::pair<Polynomial<D1-D2,std::complex<double>>, Polynomial<D2-1,std::complex<double>> > operator /(Polynomial<D1,std::complex<int>> const & p, Polynomial<D2,std::complex<int>> const & d)
+{ if(d.realD>p.realD) 
+	throw std::runtime_error("you can't divide by zero ");
+  if(static_cast<int>(D1-D2)<0)
+	throw std::runtime_error("you can't create a result Polynomial of negative degree ");
+    if(static_cast<int>(D1-D2)<(p.realD-d.realD))
+	throw std::runtime_error("The difference of the template parameters should be like al least like the one beetwen the real degree");
+
+  int divOrder=p.realD-d.realD;
+  Polynomial<D1-D2,std::complex<double>> result;
+  Polynomial<D1,std::complex<double>> tmp;
+  Polynomial<D2,std::complex<double>> tmpd;
+  //cast to complex<double> of p
+  for(std::size_t i=0;i<=D1;i++){
+  double r1=static_cast<double>(std::real(p.coeff[i])); 
+  double i1=static_cast<double>(std::imag(p.coeff[i])); 
+  tmp[i]=std::complex<double>(r1,i1);}
+  //cast to complex<double> of d
+  for(std::size_t i=0;i<=D2;i++){
+  double r2=static_cast<double>(std::real(d.coeff[i])); 
+  double i2=static_cast<double>(std::imag(d.coeff[i])); 
+  tmpd[i]=std::complex<double>(r2,i2);
+   }
+  Polynomial<D2-1,std::complex<double>> diff;
+  int const ds=static_cast<int>(d.realD);
+  int ps=static_cast<int>(p.realD); 
+
+  while(ps>=ds){
+	result[divOrder]=tmp[ps]/tmpd[ds];
+	std::vector<std::complex<double>> prod(divOrder+d.realD+1,0);
+  	for(std::size_t j=0;j<=d.realD;j++){	
+		prod[j+divOrder]=prod[j+divOrder]+result[divOrder]*tmpd[j]; 
+	  	               	}
+  	for(std::size_t i=0;i<prod.size();i++)
+               tmp[i]=tmp.coeff[i]-prod[i];
+	ps--;
+        divOrder--;
+       	if(divOrder<0){
+		for(std::size_t i=0;i<=d.realD-1;i++){	
+			diff[i]=tmp[i];
+        		       }
+  			}
+	}
+std::pair<Polynomial<D1-D2,std::complex<double>>, Polynomial<D2-1,std::complex<double>> > out=std::make_pair(result,diff);
+
+ return out;
+}
+
 
 template <unsigned S,typename L>
 std::istream & operator >> (std::istream & str, Polynomial<S,L> & r){

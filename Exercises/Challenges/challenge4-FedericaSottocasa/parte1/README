@@ -1,6 +1,6 @@
 La classe contiene un vettore che immagazzina i coefficienti del polinomio a partire dal grado 0.
 
-In input si può inserire un polinomio al massimo di grado 100 ma si può generalizzare a gradi più elevati senza problemi. Inoltre occorre specificare tutti i termini per esempio 1*x^0+0*x^1+2*x^2 e per terminare la scrittura digitare uno spazio bianco.
+In input si può inserire un polinomio al massimo di grado 100 ma si può generalizzare a gradi più elevati senza problemi. Inoltre occorre specificare tutti i termini per esempio 1*x^0+0*x^1+2*x^2 e per terminare la scrittura digitare uno spazio bianco e poi invio.
 
 In output non stampo i termini delk polinomio con coefficiente zero
 

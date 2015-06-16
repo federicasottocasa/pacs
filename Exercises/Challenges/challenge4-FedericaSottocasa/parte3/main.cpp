@@ -2,12 +2,12 @@
 #include <iostream>
 #include <vector>
 #include <exception>
-#include<complex> 
+#include<complex>    
   
 int main() 
 { 
 using complesso=std::complex<double>;
- 
+using complexint=std::complex<int>; 
 try{  
 
 //test for the basic operations 
@@ -112,6 +112,14 @@ std::cout<<"Polinomio complesso "<<pn<<" Valutazione in x complesso double "<<x<
 //result -356.62-459.58i
 
 
+std::vector<complexint> z={complexint(5,10),complexint(7,8),complexint(4,5),complexint(8,0)};
+Polynomial<3,complexint> pz(z);
+std::vector<complexint> w={complexint(3,9),complexint(9,8)};
+Polynomial<1,complexint> pw(w);
+auto dint=pz/pw;
+std::cout<<std::endl<<"divisione tra complessi a parte Re e Imag intera: "<<dint.first<<std::endl; 
+std::cout<<"resto "<<dint.second<<std::endl; 
+
 //test for the input
 std::vector<complesso> r={complesso(5,-3.9),complesso(4.6,-9),complesso(2.6,-7.8)};
 Polynomial<2,complesso> pr(r); 
@@ -123,6 +131,7 @@ std::cout<<"Polinomio immesso: "<<in<<std::endl;
 std::cout<<"p8: "<<pr<<std::endl;
 in+=pr;
 std::cout<<"Somma in+=p8 "<<in<<std::endl;
+
 
  }catch(std::exception & e){ std::cout<<e.what()<<std::endl; }  
 
